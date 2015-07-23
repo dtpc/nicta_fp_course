@@ -42,12 +42,15 @@ class Apply f => Applicative f where
 -- >>> (+1) <$> (1 :. 2 :. 3 :. Nil)
 -- [2,3,4]
 (<$>) ::
+-- Apply :: <*>
+-- Applicative :: pure
   Applicative f =>
   (a -> b)
   -> f a
   -> f b
-(<$>) =
-  error "todo: Course.Applicative#(<$>)"
+f <$> a =
+  pure f <*> a
+
 
 -- | Insert into Id.
 --
@@ -57,7 +60,7 @@ instance Applicative Id where
     a
     -> Id a
   pure =
-    error "todo: Course.Applicative pure#instance Id"
+    Id
 
 -- | Insert into a List.
 --
@@ -66,8 +69,8 @@ instance Applicative List where
   pure ::
     a
     -> List a
-  pure =
-    error "todo: Course.Applicative pure#instance List"
+  pure a =
+    a :. Nil
 
 -- | Insert into an Optional.
 --
@@ -77,7 +80,7 @@ instance Applicative Optional where
     a
     -> Optional a
   pure =
-    error "todo: Course.Applicative pure#instance Optional"
+    Full
 
 -- | Insert into a constant function.
 --
@@ -85,9 +88,9 @@ instance Applicative Optional where
 instance Applicative ((->) t) where
   pure ::
     a
-    -> ((->) t a)
+    -> (t -> a)
   pure =
-    error "todo: Course.Applicative pure#((->) t)"
+    const 
 
 -- | Sequences a list of structures to a structure of list.
 --
@@ -109,8 +112,23 @@ sequence ::
   Applicative f =>
   List (f a)
   -> f (List a)
-sequence =
-  error "todo: Course.Applicative#sequence"
+-- (<$>) { (a -> b) -> f a -> f b }
+-- (<*>) { f (a -> b) -> f a -> f b }
+-- pure { a -> f a }
+-- lift2, lift3, ...
+-- void, (<$)
+--
+-- h :: f a
+-- t :: List (f a)
+-- sequence t :: f (List a)
+sequence = 
+    foldRight (lift2 (:.)) (pure Nil)
+
+-- for every :. replace with function:
+-- f a ->  f (List a) -> f (List a)
+-- lift2 (:.)
+--
+--
 
 -- | Replicate an effect a given number of times.
 --
@@ -133,8 +151,8 @@ replicateA ::
   Int
   -> f a
   -> f (List a)
-replicateA =
-  error "todo: Course.Applicative#replicateA"
+replicateA n =
+  sequence . replicate n
 
 -- | Filter a list with a predicate that produces an effect.
 --
@@ -161,8 +179,9 @@ filtering ::
   (a -> f Bool)
   -> List a
   -> f (List a)
-filtering =
-  error "todo: Course.Applicative#filtering"
+filtering p =
+  --error "todo: Course.Applicative#filtering"
+  foldRight(\a -> lift2 (\b ->  if b then (a:.) else id) (p a)) (pure Nil)
 
 -----------------------
 -- SUPPORT LIBRARIES --

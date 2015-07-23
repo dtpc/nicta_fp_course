@@ -140,6 +140,21 @@ map ::
 map _ Nil = Nil
 map f (h :. t) = f h :. map f t
 
+map2 ::
+  (a -> b)
+  -> List a
+  -> List b
+map2 f =
+    flatMap(single . f)
+
+-- pure, return, unit, mu, lift0
+single ::
+  a
+  -> List a
+single a =
+    a :. Nil
+
+-- anything with `single` and `flatMap` is a Monad
 
 -- ternary operator
 bool :: a -> a -> Bool -> a

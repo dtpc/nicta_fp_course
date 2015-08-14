@@ -47,17 +47,13 @@ lift2 :: Apply f =>
 lift2 f a b =
    (f <$> a) <*> b
 
-lift3 ::
-  Apply f =>
-  (a -> b -> c -> d)
-  -> f a -> f b -> f c -> f d
+lift3 :: Apply f =>
+  (a -> b -> c -> d) -> f a -> f b -> f c -> f d
 lift3 f a b c =
   f <$> a <*> b <*> c
  
-lift4 ::
-  Apply f =>
-  (a -> b -> c -> d -> e)
-  -> f a -> f b -> f c -> f d -> f e
+lift4 :: Apply f =>
+  (a -> b -> c -> d -> e) -> f a -> f b -> f c -> f d -> f e
 lift4 f a b c d =
   f <$> a <*> b <*> c <*> d
   
@@ -91,9 +87,11 @@ Instances of pure for each typeclass
 
 ##### effmap
 Using:
--- Apply :: <*>
--- Applicative :: pure
-
+```haskell
+Apply :: <*>
+Applicative :: pure
+```
+effmap:
 ```haskell
 (<$>) :: Applicative f =>
   (a -> b) -> f a -> f b

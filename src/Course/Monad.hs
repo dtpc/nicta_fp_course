@@ -88,7 +88,7 @@ instance Monad Id where
     (a -> Id b)
     -> Id a
     -> Id b
-  f =<< Id(a) = f a
+  f =<< Id a = f a
 
 -- | Binds a function on a List.
 --
@@ -112,7 +112,7 @@ instance Monad Optional where
     -> Optional a
     -> Optional b
   _ =<< Empty = Empty
-  f =<< Full(a) = f a
+  f =<< Full a = f a
 
 -- | Binds a function on the reader ((->) t).
 --

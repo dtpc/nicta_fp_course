@@ -84,7 +84,7 @@ instance Applicative Id where
     Id (a -> b)
     -> Id a
     -> Id b
-  Id(f) <*> Id(a) =
+  Id f <*> Id a =
     Id(f a)
 
 
@@ -130,7 +130,7 @@ instance Applicative Optional where
     -> Optional a
     -> Optional b
   Empty <*> _ = Empty
-  Full(f) <*> a = f <$> a
+  Full f <*> a = f <$> a
 
 -- | Insert into a constant function.
 --

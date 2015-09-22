@@ -8,6 +8,7 @@ module Course.FileIO where
 import Course.Core
 import Course.Monad
 import Course.Applicative
+import Course.Monad
 import Course.Functor
 import Course.List
 

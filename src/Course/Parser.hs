@@ -653,6 +653,7 @@ instance Functor Parser where
     mapParser
 
 -- | Write an Applicative functor instance for a @Parser@.
+-- /Tip:/ Use @bindParser@ and @valueParser@.
 instance Applicative Parser where
   pure ::
     a

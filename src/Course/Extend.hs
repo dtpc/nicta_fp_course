@@ -51,8 +51,9 @@ instance Extend List where
     (List a -> b)
     -> List a
     -> List b
-  f <<= a =
-    (f a) :. Nil
+  _ <<= Nil = Nil
+  f <<= a@(_:.t) =
+      f a :. (f <<= t)
 
 -- | Implement the @Extend@ instance for @Optional@.
 --
@@ -67,7 +68,7 @@ instance Extend Optional where
     -> Optional a
     -> Optional b
   f <<= a =
-    Full (f a)
+    f . Full <$> a
 
 -- | Duplicate the functor using extension.
 --

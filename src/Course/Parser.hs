@@ -220,6 +220,17 @@ flbindParser =
 
 infixl 3 |||
 
+(???) ::
+  Parser a
+  -> Parser b
+  -> Parser b
+  -> Parser b
+(???) p1 p2 p3 =
+  P (\input -> case parse p1 input of
+      Result i2 _    -> parse p2 i2
+      ErrorResult _  -> parse p3 input
+    )
+
 -- | Return a parser that continues producing a list of values from the given parser.
 --
 -- /Tip:/ Use @list1@, @valueParser@ and @(|||)@.

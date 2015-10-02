@@ -244,8 +244,8 @@ hasRight (ListZipper _ _ r) =
 --
 -- prop> findLeft (const p) -<< fromList xs == IsNotZ
 --
--- >>> findLeft (== 1) (zipper [2, 1] 3 [4, 5])
--- [] >1< [2,3,4,5]
+-- >>> findLeft (== 1) (zipper [3, 2, 1] 4 [5, 6])
+-- [] >1< [2,3,4,5,6]
 --
 -- >>> findLeft (== 6) (zipper [2, 1] 3 [4, 5])
 -- ><
@@ -263,7 +263,7 @@ findLeft p (ListZipper l m r) =
   let (a, b) = break p l 
   in case b of
     Nil     -> IsNotZ
-    (x:.xs) -> IsZ $ ListZipper xs x (a ++ (m:.r))
+    (x:.xs) -> IsZ $ ListZipper xs x (reverse a ++ (m:.r))
     
 -- | Seek to the right for a location matching a predicate, starting from the
 -- current one.
@@ -738,7 +738,7 @@ instance Comonad ListZipper where
 -- Empty
 instance Traversable ListZipper where
   traverse f (ListZipper l m r) = 
-    lift3 ListZipper (traverse f l) (f m) (traverse f r)
+    lift3 ListZipper (reverse <$> (traverse f $ reverse l)) (f m) (traverse f r)
 
 -- | Implement the `Traversable` instance for `MaybeListZipper`.
 --

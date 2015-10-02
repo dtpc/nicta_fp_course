@@ -631,13 +631,12 @@ personParser =
     ph    <- spaces1 >>> phoneParser
     valueParser ( Person a fname sname smoke ph )
 -}
-
   Person <$> 
     ageParser <* spaces1 <*> 
     firstNameParser <* spaces1 <*> 
     surnameParser <* spaces1 <*> 
     smokerParser <* spaces1 <*> 
-    phoneParser <* spaces1
+    phoneParser 
         
 
 -- Make sure all the tests pass!

@@ -40,5 +40,5 @@ equalIgnoringCase ::
   Chars
   -> Chars
   -> Bool
-equalIgnoringCase =
-  error "todo: Course.Anagrams#equalIgnoringCase"
+equalIgnoringCase a b =
+  and $ zipWith ( (==) `on` toUpper) a b

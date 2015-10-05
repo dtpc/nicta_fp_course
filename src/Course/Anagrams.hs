@@ -32,8 +32,8 @@ anagrams ::
   Chars
   -> Filename
   -> IO (List Chars)
-anagrams =
-  error "todo: Course.Anagrams#anagrams"
+anagrams word fname = 
+  intersectBy equalIgnoringCase (permutations word) . lines <$> readFile fname
 
 -- Compare two strings for equality, ignoring case
 equalIgnoringCase ::
@@ -41,4 +41,4 @@ equalIgnoringCase ::
   -> Chars
   -> Bool
 equalIgnoringCase a b =
-  and $ zipWith ( (==) `on` toUpper) a b
+  ((==) `on` length) a b && (and $ zipWith ( (==) `on` toLower) a b)
